@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace StartDatabaseSeed.DTOs.ApiDTOs.StreamingAvailability
 {
-    public class StreamingAvailabilityResult
+    public class AddonStreaming
     {
-
+        public string id {  get; set; }
+        public string name { get; set; }
+        public string homePage { get; set; }
     }
 }

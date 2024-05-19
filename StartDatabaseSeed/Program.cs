@@ -12,5 +12,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(mySqlConnection,
     ServerVersion.AutoDetect(mySqlConnection));
 });
+builder.Services.AddHttpClient();
 builder.Services.AddScoped<StreamingAvailabilityApi>();
 var app = builder.Build();

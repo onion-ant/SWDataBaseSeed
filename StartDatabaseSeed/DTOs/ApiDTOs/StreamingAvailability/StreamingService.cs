@@ -11,5 +11,6 @@ namespace StartDatabaseSeed.DTOs.ApiDTOs.StreamingAvailability
         public string id {  get; set; }
         public string name { get; set; }
         public string homepage { get; set; }
+        public List<AddonStreaming> addons { get; set; }
     }
 }

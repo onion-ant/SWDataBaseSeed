@@ -14,8 +14,8 @@ namespace StartDatabaseSeed.DTOs.ApiDTOs.StreamingAvailability
         public string originalTitle { get; set;}
         public string overview { get; set;}
         public int releaseYear { get; set;}
-        public List<Genre> genres { get; set;}
-        public List<Country> streamingOptions { get; set;}
+        public List<GenreApi> genres { get; set;}
+        public Country streamingOptions { get; set;}
         public int rating { get; set;}
     }
 }

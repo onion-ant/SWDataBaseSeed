@@ -14,5 +14,6 @@ namespace StartDatabaseSeed.Models
         public string Name { get; set; }
         public string HomePage { get; set; }
         public List<Addon> addons { get; set; }
+        public List<ItemCatalog_Streaming> Items { get; set; }
     }
 }
