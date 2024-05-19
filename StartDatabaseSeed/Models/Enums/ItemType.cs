@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace StartDatabaseSeed
+namespace StartDatabaseSeed.Models.Enums
 {
-    class appsetting
+    public enum ItemType
     {
+        series = 1,
+        movie = 2
     }
 }
