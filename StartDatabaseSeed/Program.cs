@@ -14,4 +14,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<StreamingAvailabilityApi>();
+builder.Services.AddScoped<SeedDbService>();
 var app = builder.Build();
+var seed = builder.Services.BuildServiceProvider().GetRequiredService<SeedDbService>();
+await seed.SeedStreamings();
+await seed.SeedGenres();
+await seed.SeedItems();

@@ -12,12 +12,11 @@ namespace StartDatabaseSeed.Models
     public class ItemCatalog_Streaming
     {
         [ForeignKey(nameof(ItemCatalog))]
-        public int ItemCatologId { get; set; }
+        public string ItemCatologId { get; set; }
         [ForeignKey(nameof(Streaming))]
         public string StreamingId { get; set; }
-        public string quality { get; set; }
         public bool expiresSoon { get; set; }
-        public double Price { get; set; }
+        public double? Price { get; set; }
         public int Type { get; set; }
         public string Link {  get; set; }
     }

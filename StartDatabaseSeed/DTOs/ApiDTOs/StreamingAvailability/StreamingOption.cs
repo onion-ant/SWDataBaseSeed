@@ -14,7 +14,7 @@ namespace StartDatabaseSeed.DTOs.ApiDTOs.StreamingAvailability
         public StreamingType type {  get; set; }
         public string link { get; set; }
         public bool expiresSoon { get; set; }
-        public Price price { get; set; }
+        public Price? price { get; set; }
 
     }
 }

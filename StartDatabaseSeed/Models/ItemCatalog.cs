@@ -11,10 +11,11 @@ namespace StartDatabaseSeed.Models
     public class ItemCatalog
     {
         [Key]
-        public string TmdbId { get; set; }
-        public string Title { get; set; }
-        public string OriginalTitle { get; set; }
+        public string? TmdbId { get; set; }
+        public string? Title { get; set; }
+        public string? OriginalTitle { get; set; }
         public int Rating { get; set; }
+        public int Type { get; set; }
         public List<Genre> Genres {  get; set; } 
         public List<ItemCatalog_Streaming> Streamings { get; set; }
     }

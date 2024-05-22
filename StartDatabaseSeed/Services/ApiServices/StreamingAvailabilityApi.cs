@@ -35,27 +35,27 @@ namespace StartDatabaseSeed.Services
                 var request = RequestBuilderShow();
 
                 var response = _client.Send(request);
-                if(response.IsSuccessStatusCode)
+                if (response.IsSuccessStatusCode)
                 {
                     break;
                 }
                 ValidKey = null;
             }
-            if(ValidKey == null)
+            if (ValidKey == null)
             {
                 throw new Exception("No valid keys found");
             }
         }
 
-        public async Task GetItems(ItemCatalog item)
+        public async IAsyncEnumerable<List<ItemCatalog>> GetItems()
         {
             string? nextCursor = _config["nextCursor"] != null ? _config["nextCursor"] : null;
 
             bool hasMore = true;
             StreamingAvailabilityShowsResult result = null;
-            try
+            do
             {
-                do
+                try
                 {
                     var request = RequestBuilderShow(nextCursor);
 
@@ -70,16 +70,13 @@ namespace StartDatabaseSeed.Services
                     result = JsonConvert.DeserializeObject<StreamingAvailabilityShowsResult>(body);
                     hasMore = result.hasMore;
                     nextCursor = result.nextCursor;
-                } while (hasMore);
-                foreach(var show in result.shows)
-                {
-                    item = show.ToItem();
                 }
-            }
-            catch (Exception)
-            {
+                catch (Exception)
+                {
 
-            }
+                }
+                yield return result.shows.Select(s => s.ToItem()).ToList();
+            } while (hasMore);
         }
         public async Task<List<Streaming>> GetStreamings()
         {
@@ -99,6 +96,25 @@ namespace StartDatabaseSeed.Services
                 streamingList.Add(streaming.ToStreaming());
             }
             return streamingList;
+        }
+        public async Task<List<Genre>> GetGenres()
+        {
+            var request = RequestBuilderGenre();
+
+            var response = await _client.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                throw new Exception("Fail to fetch");
+            }
+            var body = await response.Content.ReadAsStringAsync();
+
+            var result = JsonConvert.DeserializeObject<List<GenreApi>>(body);
+            var genreList = new List<Genre>();
+            foreach (var genre in result)
+            {
+                genreList.Add(genre.ToGenre());
+            }
+            return genreList;
         }
         private HttpRequestMessage RequestBuilderShow(string? nextCursor = null)
         {
@@ -136,6 +152,21 @@ namespace StartDatabaseSeed.Services
             {
                 Method = HttpMethod.Get,
                 RequestUri = new Uri("https://streaming-availability.p.rapidapi.com/countries/br?output_language=en"),
+                Headers =
+                {
+                    { "X-RapidAPI-Key", $"{ValidKey}" },
+                    { "X-RapidAPI-Host", "streaming-availability.p.rapidapi.com" },
+                },
+            };
+
+            return request;
+        }
+        private HttpRequestMessage RequestBuilderGenre()
+        {
+            var request = new HttpRequestMessage
+            {
+                Method = HttpMethod.Get,
+                RequestUri = new Uri("https://streaming-availability.p.rapidapi.com/genres?output_language=en"),
                 Headers =
                 {
                     { "X-RapidAPI-Key", $"{ValidKey}" },

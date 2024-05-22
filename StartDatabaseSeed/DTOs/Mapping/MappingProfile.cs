@@ -17,9 +17,10 @@ namespace StartDatabaseSeed.DTOs.Mapping
             {
                 TmdbId = show.tmdbId,
                 OriginalTitle = show.originalTitle,
+                Type = (int)show.showType,
                 Genres = show.genres.Select(g => g.ToGenre()).ToList(),
                 Rating = show.rating,
-                Streamings = show.streamingOptions.br.Select(so => so.ToItemCatalogStreaming()).ToList(),
+                Streamings = show.streamingOptions.br.Select(so => so.ToItemCatalogStreaming(show.tmdbId)).ToList(),
             };
         }
         public static Genre ToGenre(this GenreApi genreApi)
@@ -30,15 +31,15 @@ namespace StartDatabaseSeed.DTOs.Mapping
                 Name = genreApi.name,
             };
         }
-        public static ItemCatalog_Streaming ToItemCatalogStreaming(this StreamingOption sOption)
+        public static ItemCatalog_Streaming ToItemCatalogStreaming(this StreamingOption sOption, string tmdbId)
         {
             return new ItemCatalog_Streaming()
             {
+                ItemCatologId = tmdbId,
                 StreamingId = sOption.service.id,
                 expiresSoon = sOption.expiresSoon,
                 Link = sOption.link,
-                Price = sOption.price.amount,
-                quality = sOption.quality,
+                Price = sOption.price?.amount,
                 Type = (int)sOption.type
             };
         }
