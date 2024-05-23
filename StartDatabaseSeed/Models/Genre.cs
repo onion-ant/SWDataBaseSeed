@@ -10,8 +10,8 @@ namespace StartDatabaseSeed.Models
     public class Genre
     {
         [Key]
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public List<ItemCatalog> Items { get; set; }
+        public string? Id { get; set; }
+        public string? Name { get; set; }
+        public List<ItemCatalog>? Items { get; set; }
     }
 }

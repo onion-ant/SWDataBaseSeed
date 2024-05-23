@@ -1,10 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using StartDatabaseSeed.DTOs.ApiDTOs.StreamingAvailability;
 using StartDatabaseSeed.DTOs.Mapping;
 using StartDatabaseSeed.Models;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -70,12 +72,19 @@ namespace StartDatabaseSeed.Services
                     result = JsonConvert.DeserializeObject<StreamingAvailabilityShowsResult>(body);
                     hasMore = result.hasMore;
                     nextCursor = result.nextCursor;
+                    throw new Exception("Fail to fetch");
                 }
                 catch (Exception)
                 {
+                    var json = File.ReadAllText("appsettings.json");
+                    var jsonObj = JObject.Parse(json);
 
+                    jsonObj["nextCursor"] = nextCursor;
+
+                    string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
+                    File.WriteAllText("appsettings.json", output);
                 }
-                yield return result.shows.Select(s => s.ToItem()).ToList();
+                yield return result.shows.Select(s => s.ToItem() ).ToList();
             } while (hasMore);
         }
         public async Task<List<Streaming>> GetStreamings()

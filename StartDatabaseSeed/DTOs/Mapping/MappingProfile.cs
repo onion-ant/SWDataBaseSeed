@@ -11,7 +11,7 @@ namespace StartDatabaseSeed.DTOs.Mapping
 {
     public static class EntityExtentions
     {
-        public static ItemCatalog ToItem(this Show show)
+        public static ItemCatalog? ToItem(this Show show)
         {
             return new ItemCatalog()
             {
@@ -20,7 +20,7 @@ namespace StartDatabaseSeed.DTOs.Mapping
                 Type = (int)show.showType,
                 Genres = show.genres.Select(g => g.ToGenre()).ToList(),
                 Rating = show.rating,
-                Streamings = show.streamingOptions.br.Select(so => so.ToItemCatalogStreaming(show.tmdbId)).ToList(),
+                Streaming = show.streamingOptions.br.Select(so => so.ToItemCatalogStreaming(show.tmdbId)).ToList(),
             };
         }
         public static Genre ToGenre(this GenreApi genreApi)
@@ -35,7 +35,7 @@ namespace StartDatabaseSeed.DTOs.Mapping
         {
             return new ItemCatalog_Streaming()
             {
-                ItemCatologId = tmdbId,
+                TmdbId = tmdbId,
                 StreamingId = sOption.service.id,
                 expiresSoon = sOption.expiresSoon,
                 Link = sOption.link,

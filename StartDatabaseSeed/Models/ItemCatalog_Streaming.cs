@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace StartDatabaseSeed.Models
 {
-    [PrimaryKey(nameof(ItemCatologId),nameof(StreamingId))]
+    [PrimaryKey(nameof(TmdbId),nameof(StreamingId))]
     public class ItemCatalog_Streaming
     {
         [ForeignKey(nameof(ItemCatalog))]
-        public string ItemCatologId { get; set; }
+        public string? TmdbId { get; set; }
         [ForeignKey(nameof(Streaming))]
-        public string StreamingId { get; set; }
-        public bool expiresSoon { get; set; }
+        public string? StreamingId { get; set; }
+        public bool? expiresSoon { get; set; }
         public double? Price { get; set; }
-        public int Type { get; set; }
-        public string Link {  get; set; }
+        public int? Type { get; set; }
+        public string? Link {  get; set; }
     }
 }

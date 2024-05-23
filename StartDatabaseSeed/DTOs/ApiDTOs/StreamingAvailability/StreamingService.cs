@@ -8,9 +8,9 @@ namespace StartDatabaseSeed.DTOs.ApiDTOs.StreamingAvailability
 {
     public class StreamingService
     {
-        public string id {  get; set; }
-        public string name { get; set; }
-        public string homepage { get; set; }
-        public List<AddonStreaming> addons { get; set; }
+        public string? id {  get; set; }
+        public string? name { get; set; }
+        public string? homepage { get; set; }
+        public List<AddonStreaming>? addons { get; set; }
     }
 }

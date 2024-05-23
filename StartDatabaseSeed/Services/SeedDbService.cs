@@ -73,7 +73,7 @@ namespace StartDatabaseSeed.Services
                     _context.ItemsCatalog.Add(item);
                     _context.SaveChanges();
                 }
-                if (itemSource.Streamings != null)
+                if (itemSource.Streaming != null)
                 {
                     await LinkStreamingsItems(itemSource);
                 }
@@ -81,9 +81,9 @@ namespace StartDatabaseSeed.Services
         }
         private async Task LinkStreamingsItems(ItemCatalog itemSource)
         {
-            foreach (var streaming in itemSource.Streamings)
+            foreach (var streaming in itemSource.Streaming)
             {
-                if (_context.ItemsCatalog_Streamings.FirstOrDefault(ItemStreaming => ItemStreaming.ItemCatologId == streaming.ItemCatologId &&
+                if (_context.ItemsCatalog_Streamings.FirstOrDefault(ItemStreaming => ItemStreaming.TmdbId == streaming.TmdbId &&
                 ItemStreaming.StreamingId == streaming.StreamingId) == null)
                 {
                     _context.ItemsCatalog_Streamings.Add(streaming);
