@@ -72,7 +72,6 @@ namespace StartDatabaseSeed.Services
                     result = JsonConvert.DeserializeObject<StreamingAvailabilityShowsResult>(body);
                     hasMore = result.hasMore;
                     nextCursor = result.nextCursor;
-                    throw new Exception("Fail to fetch");
                 }
                 catch (Exception)
                 {
@@ -83,8 +82,9 @@ namespace StartDatabaseSeed.Services
 
                     string output = JsonConvert.SerializeObject(jsonObj, Newtonsoft.Json.Formatting.Indented);
                     File.WriteAllText("appsettings.json", output);
+                    break;
                 }
-                yield return result.shows.Select(s => s.ToItem() ).ToList();
+                yield return result.shows.Select(s => s.ToItem()).ToList();
             } while (hasMore);
         }
         public async Task<List<Streaming>> GetStreamings()
@@ -132,7 +132,7 @@ namespace StartDatabaseSeed.Services
                 var requestCursor = new HttpRequestMessage
                 {
                     Method = HttpMethod.Get,
-                    RequestUri = new Uri("https://streaming-availability.p.rapidapi.com/shows/search/filters?country=br&series_granularity=show&order_by=original_title&output_language=en&order_direction=asc&genres_relation=and"),
+                    RequestUri = new Uri("https://streaming-availability.p.rapidapi.com/shows/search/filters?country=br&series_granularity=show&order_by=rating&output_language=en&order_direction=asc&genres_relation=and"),
                     Headers =
                 {
                     { "X-RapidAPI-Key", $"{ValidKey}" },
@@ -145,7 +145,7 @@ namespace StartDatabaseSeed.Services
             var request = new HttpRequestMessage
             {
                 Method = HttpMethod.Get,
-                RequestUri = new Uri($"https://streaming-availability.p.rapidapi.com/shows/search/filters?country=br&cursor={nextCursor}&series_granularity=show&order_by=original_title&output_language=en&order_direction=asc&genres_relation=and"),
+                RequestUri = new Uri($"https://streaming-availability.p.rapidapi.com/shows/search/filters?country=br&cursor={nextCursor}&series_granularity=show&order_by=rating&output_language=en&order_direction=asc&genres_relation=and"),
                 Headers =
                 {
                     { "X-RapidAPI-Key", $"{ValidKey}" },

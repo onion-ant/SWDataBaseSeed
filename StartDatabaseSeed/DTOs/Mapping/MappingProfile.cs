@@ -18,9 +18,9 @@ namespace StartDatabaseSeed.DTOs.Mapping
                 TmdbId = show.tmdbId,
                 OriginalTitle = show.originalTitle,
                 Type = (int)show.showType,
-                Genres = show.genres.Select(g => g.ToGenre()).ToList(),
+                Genres = show.genres == null ? show.genres.Select(g => g.ToGenre()).ToList() : null,
                 Rating = show.rating,
-                Streaming = show.streamingOptions.br.Select(so => so.ToItemCatalogStreaming(show.tmdbId)).ToList(),
+                Streaming = show.streamingOptions.br == null ? show.streamingOptions.br.Select(so => so.ToItemCatalogStreaming(show.tmdbId)).ToList() : null,
             };
         }
         public static Genre ToGenre(this GenreApi genreApi)
