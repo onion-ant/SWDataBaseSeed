@@ -70,10 +70,12 @@ namespace StartDatabaseSeed.Services
                         item.Genres.Add(genre);
                     }
                 }
-
-                if (_context.ItemsCatalog.FirstOrDefault(Item => Item.TmdbId == item.TmdbId) == null)
+                var newTmdbId = itemSource.TmdbId.Split('/')[1];
+                if (_context.ItemsCatalog.FirstOrDefault(Item => Item.TmdbId == newTmdbId) == null)
                 {
                     await _tmdbApiService.GetTitle(item);
+                    item.TmdbId = newTmdbId;
+                    itemSource.TmdbId = newTmdbId;
                     _context.ItemsCatalog.Add(item);
                     _context.SaveChanges();
                 }
