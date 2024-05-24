@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using StartDatabaseSeed.Data;
 using StartDatabaseSeed.Services;
+using StartDatabaseSeed.Services.ApiServices;
 
 var builder = Host.CreateApplicationBuilder();
 string? mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -14,6 +15,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 builder.Services.AddHttpClient();
 builder.Services.AddScoped<StreamingAvailabilityApi>();
+builder.Services.AddScoped<TmdbApi>();
 builder.Services.AddScoped<SeedDbService>();
 var app = builder.Build();
 var seed = builder.Services.BuildServiceProvider().GetRequiredService<SeedDbService>();

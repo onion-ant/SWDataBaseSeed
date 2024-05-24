@@ -1,5 +1,6 @@
 ﻿using StartDatabaseSeed.Data;
 using StartDatabaseSeed.Models;
+using StartDatabaseSeed.Services.ApiServices;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,12 +12,14 @@ namespace StartDatabaseSeed.Services
 {
     public class SeedDbService
     {
-        public readonly AppDbContext _context;
-        public readonly StreamingAvailabilityApi _streamingAvailabilityService;
-        public SeedDbService(StreamingAvailabilityApi streamingAvailabilityApi, AppDbContext context)
+        private readonly AppDbContext _context;
+        private readonly StreamingAvailabilityApi _streamingAvailabilityService;
+        private readonly TmdbApi _tmdbApiService;
+        public SeedDbService(StreamingAvailabilityApi streamingAvailabilityApi, AppDbContext context, TmdbApi tmdbApiService)
         {
             _streamingAvailabilityService = streamingAvailabilityApi;
             _context = context;
+            _tmdbApiService = tmdbApiService;
         }
         public async Task SeedStreamings()
         {
@@ -70,6 +73,7 @@ namespace StartDatabaseSeed.Services
 
                 if (_context.ItemsCatalog.FirstOrDefault(Item => Item.TmdbId == item.TmdbId) == null)
                 {
+                    await _tmdbApiService.GetTitle(item);
                     _context.ItemsCatalog.Add(item);
                     _context.SaveChanges();
                 }
@@ -83,7 +87,7 @@ namespace StartDatabaseSeed.Services
         {
             foreach (var streaming in itemSource.Streaming)
             {
-                if (_context.ItemsCatalog_Streamings.FirstOrDefault(ItemStreaming => ItemStreaming.TmdbId == streaming.TmdbId &&
+                if (_context.ItemsCatalog_Streamings.FirstOrDefault(ItemStreaming => ItemStreaming.ItemCatalogTmdbId == streaming.ItemCatalogTmdbId &&
                 ItemStreaming.StreamingId == streaming.StreamingId) == null)
                 {
                     _context.ItemsCatalog_Streamings.Add(streaming);
