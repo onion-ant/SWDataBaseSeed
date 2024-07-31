@@ -20,7 +20,7 @@ namespace StartDatabaseSeed.DTOs.Mapping
                 Type = (int)show.showType,
                 Genres = show.genres != null ? show.genres.Select(g => g.ToGenre()).ToList() : null,
                 Rating = show.rating,
-                Streaming = show.streamingOptions.br != null ? show.streamingOptions.br.Select(so => so.ToItemCatalogStreaming(show.tmdbId.Split('/')[1])).ToList() : null,
+                Streaming = show.streamingOptions.br != null ? show.streamingOptions.br.Select(so => so.ToItemCatalogStreaming(show.tmdbId)).ToList() : null,
             };
         }
         public static Genre ToGenre(this GenreApi genreApi)
